@@ -4,7 +4,7 @@ Custom wired doorbell chime with an Arduino MKR Zero
 ## Intro
 
 This is a small DYI project to replace a very old doorbell chime with
-a custom-made using an Arduino board. There are plenty of commerical
+a custom-made one using an Arduino board. There are plenty of commerical
 products out there, but they are either wireless or very bulky. My old
 doorbell chime was built into an electric box, and I wanted to keep
 the form factor, while improving the sound.
