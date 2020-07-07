@@ -9,7 +9,8 @@ products out there, but they are either wireless or very bulky. My old
 doorbell chime was built into an electric box, and I wanted to keep
 the form factor, while improving the sound.
 
-The MKR Zero is a very nice board for such a project. It has an
+The MKR Zero is a very nice board for such a project, due to its small          
+form factor. It has an
 integrated SD card reader and can play sounds through I2S. 
 To convert audio signal into sound, it needs an external board that
 acts as a DAC/Amp as well as a loudspeaker.
