@@ -1,4 +1,4 @@
-# doorbell
+# Arduino Doorbell
 Custom wired doorbell chime with an Arduino MKR Zero
 
 ## Intro
