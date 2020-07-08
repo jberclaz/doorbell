@@ -9,9 +9,9 @@ products out there, but they are either wireless or very bulky. My old
 doorbell chime was built into an electric box, and I wanted to keep
 the form factor, while improving the sound.
 
-The MKR Zero is a very nice board for such a project, due to its small 
+The MKR Zero is a very nice board for such a project, due to its small
 form factor. It has an
-integrated SD card reader and can play sounds through I2S. 
+integrated SD card reader and can play sounds through I2S.
 To convert audio signal into sound, it needs an external board that
 acts as a DAC/Amp as well as a loudspeaker.
 
@@ -53,6 +53,12 @@ work together. So I ended up rotating among a few different chimes
 after the doorbell has been pressed for a predefined number of
 time. It is as simple as loading a new wave file from the SD card.
 
+## Data
+
+Just place chime sounds as wave files in the SD card's root
+folder. Name them as `chime_0.wav`, etc. Wave files can be created
+from MP3s with tools like [FFMpeg](https://ffmpeg.org).
+
 ## Hardware
 Here is the hardware I used for this project:
 * Arduino [MKR Zero](https://store.arduino.cc/usa/arduino-mkrzero)
@@ -84,3 +90,11 @@ that the circuit is closed, even when the button is not pressed. It is
 a problem for our digital pin, because it will understand that the
 button is constantly pressed. This issue can be simply solved by
 opening the doorbell button and removing the bulb.
+
+
+## Troubleshooting
+Formatting the SD card with any OS formatter (Windows, Linux)
+failed. While the card was readable on both OS, the Arduino board
+could not handle the file system. I had to use this [formatting
+application](https://www.sdcard.org/downloads/formatter/) to
+successfully format a card that the Arduino could read.
