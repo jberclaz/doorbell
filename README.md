@@ -93,8 +93,16 @@ opening the doorbell button and removing the bulb.
 
 
 ## Troubleshooting
+### SD card formatting
 Formatting the SD card with any OS formatter (Windows, Linux)
 failed. While the card was readable on both OS, the Arduino board
 could not handle the file system. I had to use this [formatting
 application](https://www.sdcard.org/downloads/formatter/) to
 successfully format a card that the Arduino could read.
+
+### Program uploading
+Once you have uploaded your first program, the Arduino will always go
+to deep sleep while it is not playing a tune. This is an issue,
+because a new program cannot be uploaded while the board is in deep
+sleep. The solution is to press the /reset/ button *twice*. The orange
+light will blink and the board is then ready for a new upload.

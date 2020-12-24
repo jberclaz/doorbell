@@ -13,6 +13,8 @@ int current_chime = 0;
 
 int current_number_rings = 0;
 
+bool doorbell_pressed = false;
+
 // variable representing the Wave File
 SDWaveFile waveFile;
 
@@ -88,32 +90,37 @@ void setup() {
 }
 
 void loop() {
-  if (!AudioOutI2S.isPlaying()) {
-    // turn LED on during playback, for debugging
-    digitalWrite(LED_BUILTIN, HIGH);
+  if (doorbell_pressed) {
+    doorbell_pressed = false;
 
-    AudioOutI2S.play(waveFile);
-    // wait until playback is done
-    while (AudioOutI2S.isPlaying()) {
-      delay(100);
+    if (!AudioOutI2S.isPlaying()) {
+      // turn LED on during playback, for debugging
+      digitalWrite(LED_BUILTIN, HIGH);
+
+      AudioOutI2S.play(waveFile);
+      // wait until playback is done
+      while (AudioOutI2S.isPlaying()) {
+        delay(100);
+      }
+      digitalWrite(LED_BUILTIN, LOW);
+
+      current_number_rings ++;
+
+      // change chime type after reaching a predefined number of rings
+      if (current_number_rings >= max_rings_per_chime) {
+        current_number_rings = 0;
+        current_chime = (current_chime + 1) % number_chimes;
+        load_chime(current_chime);
+      }
     }
-    digitalWrite(LED_BUILTIN, LOW);
-
-    current_number_rings ++;
-
-    // change chime type after reaching a predefined number of rings
-    if (current_number_rings >= max_rings_per_chime) {
-      current_number_rings = 0;
-      current_chime = (current_chime + 1) % number_chimes;
-      load_chime(current_chime);
-    }
-
-    LowPower.deepSleep();
   }
+
+  LowPower.deepSleep();
 }
 
 void play_chime() {
   // do nothing, just wake up
+  doorbell_pressed = true;
 }
 
 void load_chime(int chime_number) {
