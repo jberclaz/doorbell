@@ -104,5 +104,5 @@ successfully format a card that the Arduino could read.
 Once you have uploaded your first program, the Arduino will always go
 to deep sleep while it is not playing a tune. This is an issue,
 because a new program cannot be uploaded while the board is in deep
-sleep. The solution is to press the /reset/ button *twice*. The orange
+sleep. The solution is to press the _reset_ button *twice*. The orange
 light will blink and the board is then ready for a new upload.
