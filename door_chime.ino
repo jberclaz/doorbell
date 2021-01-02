@@ -52,7 +52,7 @@ void setup() {
 
 void loop() {
   // Debounce the signal. The button/switch is subject to
-  // electromagnetic interference. This helps prevents unwanted triggers.
+  // electromagnetic interference. This helps prevent unwanted triggers.
   bool doorbell_pressed = false;
   int reading = digitalRead(doorbell_pin);
   if (reading == LOW) {
