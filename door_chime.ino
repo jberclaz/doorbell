@@ -3,7 +3,7 @@
 #include <ArduinoLowPower.h>
 
 
-const int volume = 85;
+const int volume = 80;
 
 const int doorbell_pin = 5;
 
