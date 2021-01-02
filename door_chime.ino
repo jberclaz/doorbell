@@ -3,32 +3,25 @@
 #include <ArduinoLowPower.h>
 
 
-const int doorbell_pin = 0;
+const int volume = 85;
 
-const int number_chimes = 5;
+const int doorbell_pin = 5;
 
-const int max_rings_per_chime = 10;
+const int number_chimes = 11;
+
+const int max_rings_per_chime = 6;
+
+const int debounce_delay_ms = 50;
 
 int current_chime = 0;
 
 int current_number_rings = 0;
-
-bool doorbell_pressed = false;
 
 // variable representing the Wave File
 SDWaveFile waveFile;
 
 
 void setup() {
-  // For debugging
-  // start serial connection
-  Serial.begin(9600);
-
-  if (!Serial) {
-    // wait for serial port to connect. Needed for native USB port only
-    delay(5000);
-  }
-
   // configure LED
   pinMode(LED_BUILTIN, OUTPUT);
   // configure pin 'doorbell_pin' as an input and enable the internal pull-up resistor
@@ -39,57 +32,36 @@ void setup() {
   // you may need to pass a pin number in begin for SS
   // Serial.print("Initializing SD card...");
   if (!SD.begin()) {
-    if (Serial) {
-      Serial.println("initialization failed!");
-    }
-    digitalWrite(LED_BUILTIN, HIGH);
-    return;
-  }
-  if (Serial) {
-    Serial.println("initialization done.");
-  }
-
-  load_chime(current_chime);
-
-  // print out some info. about the wave file
-  if (Serial) {
-    Serial.print("Bits per sample = ");
-    Serial.println(waveFile.bitsPerSample());
-
-    long channels = waveFile.channels();
-    Serial.print("Channels = ");
-    Serial.println(channels);
-
-    long sampleRate = waveFile.sampleRate();
-    Serial.print("Sample rate = ");
-    Serial.print(sampleRate);
-    Serial.println(" Hz");
-
-    long duration = waveFile.duration();
-    Serial.print("Duration = ");
-    Serial.print(duration);
-    Serial.println(" seconds");
-  }
-
-  // adjust the playback volume 0 - 100
-  AudioOutI2S.volume(85);
-
-  // check if the I2S output can play the wave file
-  if (!AudioOutI2S.canPlay(waveFile)) {
-    if (Serial) {
-      Serial.println("unable to play wave file using I2S!");
-    }
     digitalWrite(LED_BUILTIN, HIGH);
     while (1);
   }
 
-  if (Serial) {
-    Serial.println("Sleeping...");
+  load_chime(current_chime);
+
+  // adjust the playback volume 0 - 100
+  AudioOutI2S.volume(volume);
+
+  // check if the I2S output can play the wave file
+  if (!AudioOutI2S.canPlay(waveFile)) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    while (1);
   }
+
   LowPower.deepSleep();
 }
 
 void loop() {
+  // debounce
+  bool doorbell_pressed = false;
+  int reading = digitalRead(doorbell_pin);
+  if (reading == LOW) {
+    delay(debounce_delay_ms);
+    reading = digitalRead(doorbell_pin);
+    if (reading == LOW) {
+      doorbell_pressed = true;
+    }
+  }
+
   if (doorbell_pressed) {
     doorbell_pressed = false;
 
@@ -120,7 +92,6 @@ void loop() {
 
 void play_chime() {
   // do nothing, just wake up
-  doorbell_pressed = true;
 }
 
 void load_chime(int chime_number) {
@@ -131,9 +102,6 @@ void load_chime(int chime_number) {
 
   // check if the WaveFile is valid
   if (!waveFile) {
-    if (Serial) {
-      Serial.println("wave file is invalid!");
-    }
     digitalWrite(LED_BUILTIN, HIGH);
     while (1);
   }
